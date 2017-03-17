@@ -4,6 +4,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,14 +22,17 @@ public class WebserverHandler extends AbstractHandler {
     private String body;
 
     // Constructor
-    public WebserverHandler () {
-        greeting = "Hello World";
+    WebserverHandler() {
+        greeting = "Hello World from WebserverHandler";
         body = "Body";
     }
 
     // Custom method
     public void handle (String target, Request baseRequest, HttpServletRequest request,
                         HttpServletResponse response) throws IOException, ServletException {
+        //Log some things to test
+        System.out.println(baseRequest.getPathInfo());
+
         response.setContentType("text/html; charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
