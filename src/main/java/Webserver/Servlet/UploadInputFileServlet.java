@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -30,6 +31,18 @@ public class UploadInputFileServlet extends HttpServlet {
 
         // Set the status to tell the client everything went well
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        File file = new File(Utils.Path.getSimulationInputFilePath() + fileName);
+
+        if(file.delete()) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+        else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

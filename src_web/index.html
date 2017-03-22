@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="src/css/bootstrap.css" />
   <title>Live modeling tool</title>
 </head>
-
 <body>
-  <h1>Hello Antoine</h1>
 
 
-  <form name="geol" method="post" enctype="multipart/form-data" action="/API/uploadGeolInput">
-    <input type="file" name="file"/>
-    <input type="submit" />
-  </form>
+  <section id="app"></section>
+
+
+  <!-- NAVBAR (will end in the app vue) -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Live modeling tool for OSUR - Boussinesq Simulation</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Input files section -->
+  <section id="inputFilesSection"></section>
+
+  <!-- Charts section -->
+  <section id="charts"></section>
+
+  <!-- Results selection section -->
+  <section id="resultsSelection"></section>
+
+  <script src="/dist/build.js"></script>
 
 </body>
 </html>

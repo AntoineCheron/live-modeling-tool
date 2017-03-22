@@ -1,7 +1,5 @@
 package Webserver.Servlet;
 
-import jdk.internal.util.xml.impl.Input;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

@@ -43,7 +43,7 @@ GET, return a JSON array
 Give a list of the missing elements needed in order to run the simulation.
 
 ## Simulation results part related services
-*/results/*
+*/result/?name={nameOfTheResult}*
 GET, return a JSON array
 Give the list of results from the simulation.
 
