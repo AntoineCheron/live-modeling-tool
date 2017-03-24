@@ -48,6 +48,7 @@ public class SimulationPrerequisiteControlServlet extends HttpServlet {
 
     // Custom methods
 
+    // Not working : TODO resolve it
     private void generateMissingInputList () throws NullPointerException {
         missingFiles = (ArrayList<String>) inputFileList.clone();
 
@@ -60,10 +61,13 @@ public class SimulationPrerequisiteControlServlet extends HttpServlet {
 
         /* Check whether each file is in the destination folder or not and if it finds a needed file, remove it
         from the list of missing files */
-        for (File dir_content : dir_contents) {
-            if (missingFiles.contains(dir_content.getName())) {
-                missingFiles.remove(dir_content.getName());
+        if(dir_contents != null){
+            for (File dir_content : dir_contents) {
+                if (missingFiles.contains(dir_content.getName())) {
+                    missingFiles.remove(dir_content.getName());
+                }
             }
         }
+
     }
 }

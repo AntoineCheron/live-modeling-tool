@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Servlet used to let the user upload the files that are needed to run a simulation
@@ -24,6 +25,7 @@ public class UploadInputFileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Retrieve the file
+        //TODO : resolve the problem : the file isn't found by request.getPart()
         Part file = request.getPart("file");
 
         // Save the file onto the hard drive with the right name

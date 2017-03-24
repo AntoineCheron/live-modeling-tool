@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import WS from './WebServices/WebServices.js'
+
 export default {
   name: 'inputs',
   data () {
@@ -32,7 +34,12 @@ export default {
   },
   methods: {
     uploadFiles: function() {
-      alert('hello');
+      /* For each file input, verify if the user input a file. If so, upload it.
+      After it : call this.fireMissingElementToSimulateRequest */
+      if (this.geolInput != null) WS.postUploadGeolInput(this.geolInput, this.fireMissingElementToSimulateRequest);
+      if (this.morphoInput != null) WS.postUploadMorphoInput(this.morphoInput, this.fireMissingElementToSimulateRequest);
+      if (this.hydroInput != null) WS.postUploadHydroInput(this.hydroInput, this.fireMissingElementToSimulateRequest);
+      if (this.paramInput != null) WS.postUploadParamInput(this.paramInput, this.fireMissingElementToSimulateRequest);
     },
     onFileChange: function(e){
       // Retrieve the file
@@ -41,6 +48,17 @@ export default {
       const modelData = e.srcElement.id;
       // Put the file into the data object
       this._data[modelData] = file;
+    },
+    // Callback for any uploadFileMethod
+    fireMissingElementToSimulateRequest: function(){
+      WS.getMissingElementToSimulate(this.updateAllFilesUploaded);
+    },
+    /* Called after receiving the responseCode from an upload file request.
+    This method is used to update the allFilesUploaded boolean that display, or
+    not, the "Successfully submitted !" message*/
+    updateAllFilesUploaded: function(req) {
+      const list = JSON.parse(req.responseText);
+      (list.length == 0) ? this.allFilesUploaded = true : this.allFilesUploaded = false;
     }
   }
 }

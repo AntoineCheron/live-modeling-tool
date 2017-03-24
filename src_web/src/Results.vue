@@ -28,18 +28,18 @@
 </template>
 
 <script>
+import WS from './WebServices/WebServices.js'
 import _ from 'underscore'
 import ChartSelection from './results_components/ChartComponent.vue'
 
 export default {
   name: 'results',
+  created () {
+    WS.getResulsFormat(this.updateResultsFormat);
+  },
   data () {
     return {
-      resultsFormat: [
-        'Q',
-        'S',
-        'QS',
-      ],
+      resultsFormat: [],
       charts: [
         {id:1, type: 'default', selectedResults: ['Q']},
         {id:2, type: 'default', selectedResults: ['S', 'QS']},
@@ -71,6 +71,14 @@ export default {
     addChart: function() {
       this.charts.push({id:this.nextChartId, type: 'pie chart', selectedResults: []});
       this.nextChartId = this.nextChartId+1;
+    },
+    // Callback for the getRequest method
+    updateResultsFormat: function(req) {
+      // Verify that the result is not empty before modifying the value
+      const newResultsFormat = JSON.parse(req.responseText);
+      if (newResultsFormat !== undefined) {
+        this.resultsFormat = newResultsFormat;
+      }
     }
   },
   components: {
@@ -94,5 +102,9 @@ export default {
     display: block;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .chartElement {
+    margin-bottom: 20px;
   }
 </style>
