@@ -4,13 +4,14 @@
 
     <form v-for="result in chartData">
       <input type="checkbox" v-bind:id="result" v-bind:value="result"
+      v-bind:checked="chartObject.selectedResults.indexOf(result) != -1"
       v-on:change="changeOnResult($event.target, result)">
       <label v-bind:for="result">{{ result }}</label>
     </form>
     <br />
-    <select v-bind:selectedIndex.value="chartType" v-on:input="selectedChartType($event.target.options[$event.target.selectedIndex].value)">
-      <option value="default" selected>Please select the type of the chart</option>
-      <option v-for="type in chartList">{{ type }}</option>
+    <select v-bind:value="chartObject.type" v-on:input="selectedChartType($event.target.options[$event.target.selectedIndex].value)">
+      <option value="default">Please select the type of the chart</option>
+      <option v-for="type in chartList" v-bind:value="type">{{ type }}</option>
     </select>
 
     <button class="btn btn-success" v-on:click="generate">Generate chart</button>
@@ -28,14 +29,15 @@ export default {
     'chartList': {
       type: Array,
       required: true
-    }
+    },
+    'chartObject': {
+      type: Object,
+      required: true
+    },
   },
   methods: {
     changeOnResult: function(eventTarget, result) {
-      // TODO
-      console.log(eventTarget);
-      this.$emit('selectedResult', result);
-      this.$emit('unselectedResult', result);
+      eventTarget.checked ? this.$emit('selectedResult', result) : this.$emit('unselectedResult', result);
     }, remove: function() {
       this.$emit('remove');
     }, selectedChartType: function(type){

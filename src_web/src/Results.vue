@@ -11,11 +11,16 @@
       </div>
       <div class="col-lg-12">
         <h1>Charts selection</h1>
-        <chart-selection v-for="chart in charts" v-bind:chart-data="resultsFormat"
-        v-bind:chart-list="chartTypes" v-bind:chartType="chart.type"
+        <chart-selection v-for="chart in charts"
+        v-bind:chart-data="resultsFormat"
+        v-bind:chart-list="chartTypes"
+        v-bind:chart-object="chart"
         v-on:selectedResult="result => {addResultToChart(chart, result)}"
-        v-on:unselectedResult="result => {removeResultFromChart(chart, result)}" v-on:remove="removeChart(chart)"
-        v-on:selectedChartType="type => {setChartType(chart, type)}" v-on:generate="generateChart(chart)"></chart-selection>
+        v-on:unselectedResult="result => {removeResultFromChart(chart, result)}"
+        v-on:remove="removeChart(chart)"
+        v-on:selectedChartType="type => {setChartType(chart, type)}"
+        v-on:generate="generateChart(chart)">
+        </chart-selection>
       </div>
       <button class="btn btn-default" id="addChartButton" v-on:click="addChart">Add a new chart</button>
     </div>
@@ -36,8 +41,8 @@ export default {
         'QS',
       ],
       charts: [
-        {id:1, type: 'default', selectedResults: []},
-        {id:2, type: 'default', selectedResults: []},
+        {id:1, type: 'default', selectedResults: ['Q']},
+        {id:2, type: 'default', selectedResults: ['S', 'QS']},
       ],
       chartTypes: ['pie chart', 'flow chart', 'line chart'],
       nextChartId: 3,
@@ -64,9 +69,8 @@ export default {
       this.$emit('generateChart', chart);
     },
     addChart: function() {
-      this.charts.push({id:this.nextChartId, type: 'default', selectedResults: []});
+      this.charts.push({id:this.nextChartId, type: 'pie chart', selectedResults: []});
       this.nextChartId = this.nextChartId+1;
-      console.log(this.charts);
     }
   },
   components: {
