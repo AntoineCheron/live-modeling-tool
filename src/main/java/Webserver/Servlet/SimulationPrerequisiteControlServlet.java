@@ -63,6 +63,7 @@ public class SimulationPrerequisiteControlServlet extends HttpServlet {
         from the list of missing files */
         if(dir_contents != null){
             for (File dir_content : dir_contents) {
+                System.out.println(dir_content.getName());
                 if (missingFiles.contains(dir_content.getName())) {
                     missingFiles.remove(dir_content.getName());
                 }

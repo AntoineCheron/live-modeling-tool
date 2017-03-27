@@ -11,7 +11,7 @@ public class Path {
     }
 
     public static String getSimulationInputFilePath () {
-        return System.getProperty("user.dir") + "SimulationUtils/hs1d/test_case/matlab/custom_input/";
+        return System.getProperty("user.dir") + "/SimulationUtils/hs1d/test_case/matlab/custom_input/";
     }
 
     public static String getSimulationResultsPath () {

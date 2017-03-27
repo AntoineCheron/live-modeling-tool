@@ -9,8 +9,10 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "highcharts": "^5.0.9",
+    "underscore": "^1.8.3",
     "vue": "^2.2.1",
-    "underscore": "^1.8.3"
+    "vue-highcharts": "0.0.9"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

@@ -25,7 +25,6 @@ public class UploadInputFileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Retrieve the file
-        //TODO : resolve the problem : the file isn't found by request.getPart()
         Part file = request.getPart("file");
 
         // Save the file onto the hard drive with the right name

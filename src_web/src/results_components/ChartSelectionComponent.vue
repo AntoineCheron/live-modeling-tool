@@ -8,7 +8,11 @@
       v-on:change="changeOnResult($event.target, result)">
       <label v-bind:for="result">{{ result }}</label>
     </form>
-    <br />
+    </br>
+    <select v-bond:value="chartObject.abscisse" v-on:input="selectedAbscisse($event.target.options[$event.target.selectedIndex].value)">
+      <option value="">Please select the abscisse</option>
+      <option v-for="result in chartData" v-bind:value="result">{{ result }}</option>
+    </select>
     <select v-bind:value="chartObject.type" v-on:input="selectedChartType($event.target.options[$event.target.selectedIndex].value)">
       <option value="default">Please select the type of the chart</option>
       <option v-for="type in chartList" v-bind:value="type">{{ type }}</option>
@@ -42,6 +46,8 @@ export default {
       this.$emit('remove');
     }, selectedChartType: function(type){
       this.$emit('selectedChartType', type);
+    }, selectedAbscisse: function(abscisse){
+      this.$emit('selectedAbscisse', abscisse);
     }, generate: function() {
       this.$emit('generate');
     }
@@ -50,5 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  select {
+    margin-top: 10px;
+  }
 </style>

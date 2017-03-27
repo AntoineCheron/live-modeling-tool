@@ -7,16 +7,14 @@
         </div>
       </div>
     </nav>
-    <input-files-section></input-files-section>
-    <charts-section></charts-section>
-    <results-selection></results-selection>
+    <input-files-section class="col-lg-3"></input-files-section>
+    <results class="col-lg-9"></results>
   </div>
 </template>
 
 <script>
 import InputFilesSection from './Inputs.vue'
-import ChartsSection from './Charts.vue'
-import ResultsSelection from './Results.vue'
+import Results from './Results.vue'
 
 export default {
   name: 'app',
@@ -26,8 +24,7 @@ export default {
   },
   components : {
     InputFilesSection,
-    ChartsSection,
-    ResultsSelection
+    Results
   },
 }
 </script>
