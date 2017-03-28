@@ -120,6 +120,9 @@ export default {
           /* Important step : HERE WE HAVE ALL THE ELEMENTS TO BUILD
           THE OPTIONS OBJECT, LET'S DO THIS*/
           const options = {
+            chart: {
+              type: chart.type
+            },
             title: {
               text: `Chart ${chart.id}`
             },

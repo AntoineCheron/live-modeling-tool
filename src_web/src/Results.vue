@@ -1,8 +1,12 @@
 <template>
   <section id="results">
     <h1>Results</h1>
-    <button @click="runSimulation" class="btn btn-default">Run simulation</button>
-    <div class="loader" v-if="simulationRunning"></div>
+    <div class="horizontalContainer">
+      <button @click="runSimulation" v-if="!simulationRunning" class="btn btn-default">Run simulation</button>
+      <button @click="runSimulation" v-if="simulationRunning" class="btn btn-default" disabled>Simulation running</button>
+      <div class="loader" v-if="simulationRunning"></div>
+      <h3 v-if="simulationRunning">Simulation running for {{ simulationTimeCounter }}</h3>
+    </div>
     <charts :charts="chartsToDisplay"></charts>
     <charts-selection
     :charts="charts"
@@ -28,18 +32,39 @@ export default {
       charts: [],
       chartsToDisplay: [],
       nextChartId: 1,
-      simulationRunning: false
+      simulationRunning: false,
+      simulationTimeCounter: 0,
+      simulationTimeInterval: null
     }
   },
   methods: {
     runSimulation: function() {
+      // Request the server to launch the simulation
       WS.getSimulate()
       .then(this.simulationEnded)
-      .catch(function(err){console.error(err.statusText)});
+      .catch(function(err){
+        this.simulationEnded();
+        console.error(err.statusText)
+      });
+      // Turns the simulation running var to true to modify the view
       this.simulationRunning = true;
+      // Launch the timer
+      const Parent = this;
+      let minutes = 0;
+      let seconds = 0;
+      this.simulationTimeInterval = setInterval(function(){
+        seconds++;
+        if(seconds == 60) {
+          minutes++;
+          seconds = 0;
+        }
+        // TODO : corrige le probleme avec le span
+        Parent.simulationTimeCounter = `<span class="blue">${minutes}</span>min<span class="orange">${seconds}</span>seconds`;
+      }, 1000);
     },
     simulationEnded: function() {
       this.simulationRunning = false;
+      clearInterval(this.simulationTimeInterval);
     },
     addResultToChart: function(chart, result) {
       const index = _.indexOf(this.charts, chart);
@@ -47,7 +72,7 @@ export default {
     },
     removeResultFromChart: function(chart, result) {
       const index = _.indexOf(this.charts, chart);
-      this.charts[index].selectedResults = _.without(this.charts[index].selected_results, result);
+      this.charts[index].selectedResults = _.without(this.charts[index].selectedResults, result);
     },
     setChartType: function(chart, type) {
       // Set the var type of the chart
@@ -66,10 +91,8 @@ export default {
     generateChart: function(chart) {
       // Change the displayed value of chart in this.charts to true
       const i = this.charts.indexOf(chart);
-      console.log(i);
       chart.displayed = true;
       this.charts[i] = chart;
-      console.log(this.charts);
       // Add the chart object into the chartsToDisplay array
       this.chartsToDisplay.push(chart);
     },
@@ -101,6 +124,19 @@ export default {
 </script>
 
 <style lang="scss">
+.horizontalContainer {
+  display: flex;
+  align-items: center;
+}
+
+.blue {
+  color: #268bd2;
+}
+
+.orange {
+  color: #cb4b16;
+}
+
 .loader {
   display: inline-block;
   border: 6px solid #f3f3f3; /* Light grey */

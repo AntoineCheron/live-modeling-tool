@@ -50,7 +50,7 @@ export default {
     return {
       resultsFormat: [],
       charts: [],
-      chartTypes: ['pie chart', 'flow chart', 'line chart'],
+      chartTypes: ['pie', 'line', 'area', 'areaspline', 'bar', 'column', 'scatter', 'spline'],
     }
   },
   methods: {
