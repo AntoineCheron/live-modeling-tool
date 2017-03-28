@@ -1,13 +1,18 @@
 <template>
   <section id="results">
     <h1>Results</h1>
-    <button @click="runSimulation">Run simulation</button>
+    <button @click="runSimulation" class="btn btn-default">Run simulation</button>
     <div class="loader" v-if="simulationRunning"></div>
-    <charts :charts="charts"></charts>
+    <charts :charts="chartsToDisplay"></charts>
     <charts-selection
+    :charts="charts"
+    @addResultToChart="(chart, result) => {addResultToChart(chart, result)}"
+    @removeResultFromChart="(chart, result) => {removeResultFromChart(chart, result)}"
+    @setChartType="(chart, type) => {setChartType(chart, type)}"
+    @setAbscissa="(chart, abscissa) => {setAbscissa(chart, abscissa)}"
+    @addChart="addChart"
     @removeChart="chart => {removeChart(chart)}"
-    @generateChart="chart => {addChart(chart)}"
-    @updateChart="chart => {updateChart(chart)}"></charts-selection>
+    @generateChart="chart => {generateChart(chart)}"></charts-selection>
   </section>
 </template>
 
@@ -21,6 +26,8 @@ export default {
   data() {
     return {
       charts: [],
+      chartsToDisplay: [],
+      nextChartId: 1,
       simulationRunning: false
     }
   },
@@ -34,38 +41,56 @@ export default {
     simulationEnded: function() {
       this.simulationRunning = false;
     },
+    addResultToChart: function(chart, result) {
+      const index = _.indexOf(this.charts, chart);
+      this.charts[index].selectedResults.push(result);
+    },
+    removeResultFromChart: function(chart, result) {
+      const index = _.indexOf(this.charts, chart);
+      this.charts[index].selectedResults = _.without(this.charts[index].selected_results, result);
+    },
+    setChartType: function(chart, type) {
+      // Set the var type of the chart
+      const index = _.indexOf(this.charts, chart);
+      this.charts[index].type = type;
+    },
+    setAbscissa: function(chart, abscissa) {
+      // Set the var type of the chart
+      const index = _.indexOf(this.charts, chart);
+      this.charts[index].abscissa = abscissa;
+    },
+    addChart: function() {
+      this.charts.push({id:this.nextChartId, type: 'line chart', selectedResults: [], abscissa: '', displayed: false});
+      this.nextChartId = this.nextChartId+1;
+    },
+    generateChart: function(chart) {
+      // Change the displayed value of chart in this.charts to true
+      const i = this.charts.indexOf(chart);
+      console.log(i);
+      chart.displayed = true;
+      this.charts[i] = chart;
+      console.log(this.charts);
+      // Add the chart object into the chartsToDisplay array
+      this.chartsToDisplay.push(chart);
+    },
     removeChart: function(chart) {
-      // Retrieve the index of chart into this.charts
+      // First : remove the chart in the chartsToDisplay array
+      // Retrieve the index of chart into this.chartsToDisplay
       let index = null;
-      for(let i=0;i<this.charts.length;i++) {
-        if(this.charts[i].id === chart.id) {
+      for(let i=0;i<this.chartsToDisplay.length;i++) {
+        if(this.chartsToDisplay[i].id === chart.id) {
           index = i;
           break;
         }
       }
-
-      // Remove the chart at the index
+      // Remove the chart at the index in chartsToDisplay
       if(index !== null){
-        this.charts = _.without(this.charts, this.charts[index]);
-      }
-    },
-    addChart: function(chart) {
-      chart.displayed = true;
-      this.charts.push(chart);
-    },
-    updateChart: function(chart) {
-      // Retrieve the index of chart into this.charts
-      let index = null;
-      for(c in this.charts) {
-        if(c.id === chart.id) index = this.charts.indexOf(c);
+        this.chartsToDisplay = _.without(this.chartsToDisplay, this.chartsToDisplay[index]);
       }
 
-      if (index !== null){
-        // Replace the chart at index in the this.charts Array
-        this.charts[index] = chart
-
-        // It will automatically update the view
-      }
+      /* Second : remove the chart in the charts array. It is easier because
+      chart is synchronised with charts, but not with chartsToDisplay*/
+      this.charts = _.without(this.charts, chart);
     }
   },
   components: {

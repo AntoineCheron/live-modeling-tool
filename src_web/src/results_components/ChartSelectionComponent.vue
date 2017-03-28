@@ -3,13 +3,13 @@
     <p>Please select the results you want to see on the chart : </p>
 
     <form v-for="result in chartData">
-      <input type="checkbox" :id="result" :value="result"
+      <input type="checkbox" :value="result"
       :checked="chartObject.selectedResults.indexOf(result) != -1"
       @change="changeOnResult($event.target, result)">
       <label :for="result">{{ result }}</label>
     </form>
     </br>
-    <select v-bond:value="chartObject.abscissa" @input="selectedabscissa($event.target.options[$event.target.selectedIndex].value)">
+    <select :value="chartObject.abscissa" @input="selectedAbscissa($event.target.options[$event.target.selectedIndex].value)">
       <option value="">Please select the abscissa</option>
       <option v-for="result in chartData" :value="result">{{ result }}</option>
     </select>
@@ -18,8 +18,7 @@
       <option v-for="type in chartList" :value="type">{{ type }}</option>
     </select>
 
-    <button class="btn btn-success" @click="generate" v-if="!displayed">Generate chart</button>
-    <button class="btn btn-success" @click="update" v-if="displayed">Update chart</button>
+    <button class="btn btn-success" @click="generate" v-if="!chartObject.displayed">Generate chart</button>
     <button class="btn btn-default" @click="remove">Remove</button>
   </div>
 </template>
@@ -47,12 +46,10 @@ export default {
       this.$emit('remove');
     }, selectedChartType: function(type){
       this.$emit('selectedChartType', type);
-    }, selectedabscissa: function(abscissa){
+    }, selectedAbscissa: function(abscissa){
       this.$emit('selectedAbscissa', abscissa);
     }, generate: function() {
       this.$emit('generate');
-    }, update: function() {
-      this.$emit('update');
     }
   }
 }

@@ -20,8 +20,7 @@
         @selectedAbscissa="result => {setAbscissa(chart, result)}"
         @remove="removeChart(chart)"
         @selectedChartType="type => {setChartType(chart, type)}"
-        @generate="generateChart(chart)"
-        @update="updateChart(chart)">
+        @generate="generateChart(chart)">
         </chart-selection>
       </div>
       <button class="btn btn-default" id="addChartButton" @click="addChart">Add a new chart</button>
@@ -41,46 +40,40 @@ export default {
     .then(this.updateResultsFormat)
     .catch(function(err){console.error(err.statusText)});
   },
+  props: {
+    'charts': {
+      type: Array,
+      required: true
+    },
+  },
   data () {
     return {
       resultsFormat: [],
       charts: [],
       chartTypes: ['pie chart', 'flow chart', 'line chart'],
-      nextChartId: 1,
     }
   },
   methods: {
     addResultToChart: function(chart, result) {
-      const index = _.indexOf(this.charts, chart);
-      this.charts[index].selectedResults.push(result);
+      this.$emit('addResultToChart', chart, result);
     },
     removeResultFromChart: function(chart, result) {
-      const index = _.indexOf(this.charts, chart);
-      this.charts[index].selectedResults = _.without(this.charts[index].selected_results, result);
-    },
-    removeChart: function(chart) {
-      this.charts = _.without(this.charts, chart);
-      this.$emit('removeChart', chart);
+      this.$emit('removeResultFromChart', chart, result);
     },
     setChartType: function(chart, type) {
-      // Set the var type of the chart
-      const index = _.indexOf(this.charts, chart);
-      this.charts[index].type = type;
+      this.$emit('setChartType', chart, type);
     },
     setAbscissa: function(chart, abscissa) {
-      // Set the var type of the chart
-      const index = _.indexOf(this.charts, chart);
-      this.charts[index].abscissa = abscissa;
+      this.$emit('setAbscissa', chart, abscissa);
     },
     generateChart: function(chart) {
       this.$emit('generateChart', chart);
     },
-    updateChart: function(chart) {
-      this.$emit('updateChart', chart);
-    },
     addChart: function() {
-      this.charts.push({id:this.nextChartId, type: 'line chart', selectedResults: [], abscissa: '', displayed: false});
-      this.nextChartId = this.nextChartId+1;
+      this.$emit('addChart');
+    },
+    removeChart: function(chart) {
+      this.$emit('removeChart', chart);
     },
     // Callback for the getRequest method
     updateResultsFormat: function(responseText) {

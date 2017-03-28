@@ -31,6 +31,9 @@ export default {
     chartsWithOptions: function() {
       const parent = this;
       return new Promise(function(resolve, reject) {
+        // Verify that charts isn't empty. If so return an empty Array
+        if(parent.charts.length === 0) resolve([]);
+
         const charts = parent.charts;
         const computedCharts = [];
         /* Because this.generateOptionObjectFromChart is a promise and there
