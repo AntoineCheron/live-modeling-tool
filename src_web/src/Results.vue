@@ -1,14 +1,18 @@
 <template>
   <section id="results">
     <h1>Results</h1>
-    <button v-on:click="runSimulation">Run simulation</button>
+    <button @click="runSimulation">Run simulation</button>
     <div class="loader" v-if="simulationRunning"></div>
-    <charts></charts>
-    <charts-selection></charts-selection>
+    <charts :charts="charts"></charts>
+    <charts-selection
+    @removeChart="chart => {removeChart(chart)}"
+    @generateChart="chart => {addChart(chart)}"
+    @updateChart="chart => {updateChart(chart)}"></charts-selection>
   </section>
 </template>
 
 <script>
+import _ from "underscore"
 import WS from "./WebServices/WebServices.js"
 import Charts from "./results_components/Charts.vue"
 import ChartsSelection from "./results_components/ChartsSelection.vue"
@@ -22,11 +26,46 @@ export default {
   },
   methods: {
     runSimulation: function() {
-      WS.getSimulate(this.simulationEnded);
+      WS.getSimulate()
+      .then(this.simulationEnded)
+      .catch(function(err){console.error(err.statusText)});
       this.simulationRunning = true;
     },
     simulationEnded: function() {
       this.simulationRunning = false;
+    },
+    removeChart: function(chart) {
+      // Retrieve the index of chart into this.charts
+      let index = null;
+      for(let i=0;i<this.charts.length;i++) {
+        if(this.charts[i].id === chart.id) {
+          index = i;
+          break;
+        }
+      }
+
+      // Remove the chart at the index
+      if(index !== null){
+        this.charts = _.without(this.charts, this.charts[index]);
+      }
+    },
+    addChart: function(chart) {
+      chart.displayed = true;
+      this.charts.push(chart);
+    },
+    updateChart: function(chart) {
+      // Retrieve the index of chart into this.charts
+      let index = null;
+      for(c in this.charts) {
+        if(c.id === chart.id) index = this.charts.indexOf(c);
+      }
+
+      if (index !== null){
+        // Replace the chart at index in the this.charts Array
+        this.charts[index] = chart
+
+        // It will automatically update the view
+      }
     }
   },
   components: {

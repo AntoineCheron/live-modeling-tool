@@ -3,23 +3,24 @@
     <p>Please select the results you want to see on the chart : </p>
 
     <form v-for="result in chartData">
-      <input type="checkbox" v-bind:id="result" v-bind:value="result"
-      v-bind:checked="chartObject.selectedResults.indexOf(result) != -1"
-      v-on:change="changeOnResult($event.target, result)">
-      <label v-bind:for="result">{{ result }}</label>
+      <input type="checkbox" :id="result" :value="result"
+      :checked="chartObject.selectedResults.indexOf(result) != -1"
+      @change="changeOnResult($event.target, result)">
+      <label :for="result">{{ result }}</label>
     </form>
     </br>
-    <select v-bond:value="chartObject.abscisse" v-on:input="selectedAbscisse($event.target.options[$event.target.selectedIndex].value)">
-      <option value="">Please select the abscisse</option>
-      <option v-for="result in chartData" v-bind:value="result">{{ result }}</option>
+    <select v-bond:value="chartObject.abscissa" @input="selectedabscissa($event.target.options[$event.target.selectedIndex].value)">
+      <option value="">Please select the abscissa</option>
+      <option v-for="result in chartData" :value="result">{{ result }}</option>
     </select>
-    <select v-bind:value="chartObject.type" v-on:input="selectedChartType($event.target.options[$event.target.selectedIndex].value)">
+    <select :value="chartObject.type" @input="selectedChartType($event.target.options[$event.target.selectedIndex].value)">
       <option value="default">Please select the type of the chart</option>
-      <option v-for="type in chartList" v-bind:value="type">{{ type }}</option>
+      <option v-for="type in chartList" :value="type">{{ type }}</option>
     </select>
 
-    <button class="btn btn-success" v-on:click="generate">Generate chart</button>
-    <button class="btn btn-default" v-on:click="remove">Remove</button>
+    <button class="btn btn-success" @click="generate" v-if="!displayed">Generate chart</button>
+    <button class="btn btn-success" @click="update" v-if="displayed">Update chart</button>
+    <button class="btn btn-default" @click="remove">Remove</button>
   </div>
 </template>
 
@@ -46,10 +47,12 @@ export default {
       this.$emit('remove');
     }, selectedChartType: function(type){
       this.$emit('selectedChartType', type);
-    }, selectedAbscisse: function(abscisse){
-      this.$emit('selectedAbscisse', abscisse);
+    }, selectedabscissa: function(abscissa){
+      this.$emit('selectedAbscissa', abscissa);
     }, generate: function() {
       this.$emit('generate');
+    }, update: function() {
+      this.$emit('update');
     }
   }
 }

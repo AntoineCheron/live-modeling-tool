@@ -12,36 +12,36 @@ const API = new function () {
   this.result = this.apiUrl + "result/?name=";
   this.resultsFormat = this.apiUrl + "resultsFormat";
 
-  this.postUploadGeolInput = function (file, callback) {
-    RequestHandler.postRequest(this.uploadGeolInput, file, callback);
+  this.postUploadGeolInput = function (file) {
+    return RequestHandler.postRequest(this.uploadGeolInput, file);
   };
 
-  this.postUploadHydroInput = function (file, callback) {
-    RequestHandler.postRequest(this.uploadHydroInput, file, callback);
+  this.postUploadHydroInput = function (file) {
+    return RequestHandler.postRequest(this.uploadHydroInput, file);
   };
 
-  this.postUploadMorphoInput = function (file, callback) {
-    RequestHandler.postRequest(this.uploadMorphoInput, file, callback);
+  this.postUploadMorphoInput = function (file) {
+    return RequestHandler.postRequest(this.uploadMorphoInput, file);
   };
 
-  this.postUploadParamInput = function (file, callback) {
-    RequestHandler.postRequest(this.uploadParamInput, file, callback);
+  this.postUploadParamInput = function (file) {
+    return RequestHandler.postRequest(this.uploadParamInput, file);
   };
 
-  this.getSimulate = function (callback) {
-    RequestHandler.getRequest(this.simulate, callback);
+  this.getSimulate = function () {
+    return RequestHandler.getRequest(this.simulate);
   }
 
-  this.getMissingElementToSimulate = function (callback) {
-    RequestHandler.getRequest(this.missingElementToSimulate, callback);
+  this.getMissingElementToSimulate = function () {
+    return RequestHandler.getRequest(this.missingElementToSimulate);
   }
 
-  this.getResult = function (name, callback) {
-    RequestHandler.getRequest(`${this.simulate}${name}`, callback);
+  this.getResult = function (name) {
+    return RequestHandler.getRequest(`${this.result}${name}`);
   }
 
-  this.getResulsFormat = function (callback) {
-    RequestHandler.getRequest(this.resultsFormat, callback);
+  this.getResulsFormat = function () {
+    return RequestHandler.getRequest(this.resultsFormat);
   }
 
 }

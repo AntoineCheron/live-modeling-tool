@@ -12,18 +12,19 @@
       <div class="col-lg-12">
         <h1>Charts selection</h1>
         <chart-selection v-for="chart in charts"
-        v-bind:chart-data="resultsFormat"
-        v-bind:chart-list="chartTypes"
-        v-bind:chart-object="chart"
-        v-on:selectedResult="result => {addResultToChart(chart, result)}"
-        v-on:unselectedResult="result => {removeResultFromChart(chart, result)}"
-        v-on:selectedAbscisse="result => {setAbscisse(chart, result)}"
-        v-on:remove="removeChart(chart)"
-        v-on:selectedChartType="type => {setChartType(chart, type)}"
-        v-on:generate="generateChart(chart)">
+        :chart-data="resultsFormat"
+        :chart-list="chartTypes"
+        :chart-object="chart"
+        @selectedResult="result => {addResultToChart(chart, result)}"
+        @unselectedResult="result => {removeResultFromChart(chart, result)}"
+        @selectedAbscissa="result => {setAbscissa(chart, result)}"
+        @remove="removeChart(chart)"
+        @selectedChartType="type => {setChartType(chart, type)}"
+        @generate="generateChart(chart)"
+        @update="updateChart(chart)">
         </chart-selection>
       </div>
-      <button class="btn btn-default" id="addChartButton" v-on:click="addChart">Add a new chart</button>
+      <button class="btn btn-default" id="addChartButton" @click="addChart">Add a new chart</button>
     </div>
   </section>
 </template>
@@ -36,7 +37,9 @@ import ChartSelection from './ChartSelectionComponent.vue'
 export default {
   name: 'results',
   created () {
-    WS.getResulsFormat(this.updateResultsFormat);
+    WS.getResulsFormat()
+    .then(this.updateResultsFormat)
+    .catch(function(err){console.error(err.statusText)});
   },
   data () {
     return {
@@ -57,28 +60,32 @@ export default {
     },
     removeChart: function(chart) {
       this.charts = _.without(this.charts, chart);
+      this.$emit('removeChart', chart);
     },
     setChartType: function(chart, type) {
       // Set the var type of the chart
       const index = _.indexOf(this.charts, chart);
       this.charts[index].type = type;
     },
-    setAbscisse: function(chart, abscisse) {
+    setAbscissa: function(chart, abscissa) {
       // Set the var type of the chart
       const index = _.indexOf(this.charts, chart);
-      this.charts[index].abscisse = abscisse;
+      this.charts[index].abscissa = abscissa;
     },
     generateChart: function(chart) {
       this.$emit('generateChart', chart);
     },
+    updateChart: function(chart) {
+      this.$emit('updateChart', chart);
+    },
     addChart: function() {
-      this.charts.push({id:this.nextChartId, type: 'line chart', selectedResults: [], abscisse: ''});
+      this.charts.push({id:this.nextChartId, type: 'line chart', selectedResults: [], abscissa: '', displayed: false});
       this.nextChartId = this.nextChartId+1;
     },
     // Callback for the getRequest method
-    updateResultsFormat: function(req) {
+    updateResultsFormat: function(responseText) {
       // Verify that the result is not empty before modifying the value
-      const newResultsFormat = JSON.parse(req.responseText);
+      const newResultsFormat = JSON.parse(responseText);
       if (newResultsFormat !== undefined) {
         this.resultsFormat = newResultsFormat;
       }
