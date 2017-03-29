@@ -5,7 +5,7 @@
       <button @click="runSimulation" v-if="!simulationRunning" class="btn btn-default">Run simulation</button>
       <button @click="runSimulation" v-if="simulationRunning" class="btn btn-default" disabled>Simulation running</button>
       <div class="loader" v-if="simulationRunning"></div>
-      <h3 v-if="simulationRunning">Simulation running for {{ simulationTimeCounter }}</h3>
+      <h3 v-if="simulationRunning">Simulation running for <span class="blue">{{simulationTimer.minutes}}</span>min<span class="orange">{{simulationTimer.seconds}}</span>seconds</h3>
     </div>
     <charts :charts="chartsToDisplay"></charts>
     <charts-selection
@@ -33,7 +33,10 @@ export default {
       chartsToDisplay: [],
       nextChartId: 1,
       simulationRunning: false,
-      simulationTimeCounter: 0,
+      simulationTimer: {
+        minutes: 0,
+        seconds: 0
+      },
       simulationTimeInterval: null
     }
   },
@@ -50,16 +53,14 @@ export default {
       this.simulationRunning = true;
       // Launch the timer
       const Parent = this;
-      let minutes = 0;
-      let seconds = 0;
+      Parent.simulationTimer.seconds = 0;
+      Parent.simulationTimer.minutes = 0;
       this.simulationTimeInterval = setInterval(function(){
-        seconds++;
-        if(seconds == 60) {
-          minutes++;
-          seconds = 0;
+        Parent.simulationTimer.seconds++;
+        if(Parent.simulationTimer.seconds == 60) {
+          Parent.simulationTimer.minutes++;
+          Parent.simulationTimer.seconds = 0;
         }
-        // TODO : corrige le probleme avec le span
-        Parent.simulationTimeCounter = `<span class="blue">${minutes}</span>min<span class="orange">${seconds}</span>seconds`;
       }, 1000);
     },
     simulationEnded: function() {
@@ -85,7 +86,7 @@ export default {
       this.charts[index].abscissa = abscissa;
     },
     addChart: function() {
-      this.charts.push({id:this.nextChartId, type: 'line chart', selectedResults: [], abscissa: '', displayed: false});
+      this.charts.push({id:this.nextChartId, type: 'default', selectedResults: [], abscissa: '', displayed: false});
       this.nextChartId = this.nextChartId+1;
     },
     generateChart: function(chart) {

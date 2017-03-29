@@ -49,7 +49,9 @@ export default {
     }, selectedAbscissa: function(abscissa){
       this.$emit('selectedAbscissa', abscissa);
     }, generate: function() {
-      this.$emit('generate');
+      if((this.chartObject.type !== 'default') && (this.chartObject.selectedResults.length !== 0) && (this.chartObject.abscissa !== '')){
+        this.$emit('generate');
+      }
     }
   }
 }

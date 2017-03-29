@@ -15,6 +15,7 @@ import Vue from "vue"
 import VueHighcharts from "vue-highcharts"
 import AsyncComputed from "vue-async-computed"
 import _ from "underscore"
+import Colors from '../utils/colors.js'
 
 Vue.use(VueHighcharts);
 Vue.use(AsyncComputed);
@@ -98,6 +99,7 @@ export default {
           const yAxisSeries = [];
           let maxSerieSize = 0;
           let yAxisTitle = "";
+          const colors = new Colors();
 
           for (let i = 0; i < downloadedOrdinates.length ; i++) {
             const serieLength = JSON.parse(downloadedOrdinates[i]).length;
@@ -107,7 +109,8 @@ export default {
             // create an yAxis serie correctly formatted for each data
             const tempYAxisSerie = {
               name: chart.selectedResults[i],
-              data: JSON.parse(downloadedOrdinates[i]).map(Number)
+              data: JSON.parse(downloadedOrdinates[i]).map(Number),
+              color: colors.nextColor()
             };
             // Add it into the yAxisSeries array
             yAxisSeries.push(tempYAxisSerie);
@@ -121,29 +124,49 @@ export default {
           THE OPTIONS OBJECT, LET'S DO THIS*/
           const options = {
             chart: {
-              type: chart.type
+              type: chart.type,
+              backgroundColor: '#073642'
             },
             title: {
-              text: `Chart ${chart.id}`
+              text: `Chart ${chart.id}`,
+              style: {
+                color: 'white'
+              }
             },
             xAxis: {
-              categories: xAxis
+              categories: xAxis,
+              labels: {
+                style: {
+                  color: 'white'
+                }
+              }
             },
             yAxis: {
               title: {
-                text: yAxisTitle
+                text: yAxisTitle,
+                style: {
+                  color: 'white'
+                }
               },
               plotLines: [{
                 value: 0,
                 width: 1,
                 color: '#808080'
-              }]
+              }],
+              labels: {
+                style: {
+                  color: 'white'
+                }
+              }
             },
             legend: {
               layout: 'vertical',
               align : 'right',
               verticalAlign: 'middle',
-              borderWidth: 0
+              borderWidth: 0,
+              itemStyle: {
+                color: 'white'
+              }
             },
             plotOptions: {
               series: {
