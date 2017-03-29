@@ -40,7 +40,7 @@ const API = new function () {
     return RequestHandler.getRequest(`${this.result}${name}`);
   }
 
-  this.getResulsFormat = function () {
+  this.getResultsFormat = function () {
     return RequestHandler.getRequest(this.resultsFormat);
   }
 

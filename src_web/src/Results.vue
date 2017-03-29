@@ -10,6 +10,7 @@
     <charts :charts="chartsToDisplay"></charts>
     <charts-selection
     :charts="charts"
+    :resultsFormat="resultsFormat"
     @addResultToChart="(chart, result) => {addResultToChart(chart, result)}"
     @removeResultFromChart="(chart, result) => {removeResultFromChart(chart, result)}"
     @setChartType="(chart, type) => {setChartType(chart, type)}"
@@ -27,6 +28,9 @@ import Charts from "./results_components/Charts.vue"
 import ChartsSelection from "./results_components/ChartsSelection.vue"
 
 export default {
+  created () {
+    this.updateResultsFormat();
+  },
   data() {
     return {
       charts: [],
@@ -37,7 +41,8 @@ export default {
         minutes: 0,
         seconds: 0
       },
-      simulationTimeInterval: null
+      simulationTimeInterval: null,
+      resultsFormat: [],
     }
   },
   methods: {
@@ -66,6 +71,7 @@ export default {
     simulationEnded: function() {
       this.simulationRunning = false;
       clearInterval(this.simulationTimeInterval);
+      this.updateResultsFormat();
     },
     addResultToChart: function(chart, result) {
       const index = _.indexOf(this.charts, chart);
@@ -115,6 +121,19 @@ export default {
       /* Second : remove the chart in the charts array. It is easier because
       chart is synchronised with charts, but not with chartsToDisplay*/
       this.charts = _.without(this.charts, chart);
+    },
+    // Callback for the getRequest method
+    updateResultsFormat: function() {
+      const ParentContext = this;
+      WS.getResultsFormat()
+      .then(function(responseText) {
+        // Verify that the result is not empty before modifying the value
+        const newResultsFormat = JSON.parse(responseText);
+        if (newResultsFormat !== undefined) {
+          ParentContext.resultsFormat = newResultsFormat;
+        }
+      })
+      .catch(function(err){console.error(err.statusText)});
     }
   },
   components: {

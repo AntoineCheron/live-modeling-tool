@@ -5,5 +5,3 @@ new Vue({
   el: '#app',
   render: h => h(App)
 })
-
-// TODO : to get a HighCharts component : https://github.com/vuejs/awesome-vue#libraries--plugins

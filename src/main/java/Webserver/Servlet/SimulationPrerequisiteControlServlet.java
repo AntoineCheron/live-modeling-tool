@@ -47,8 +47,6 @@ public class SimulationPrerequisiteControlServlet extends HttpServlet {
     }
 
     // Custom methods
-
-    // Not working : TODO resolve it
     private void generateMissingInputList () throws NullPointerException {
         missingFiles = (ArrayList<String>) inputFileList.clone();
 

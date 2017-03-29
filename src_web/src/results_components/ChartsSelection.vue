@@ -35,20 +35,17 @@ import ChartSelection from './ChartSelectionComponent.vue'
 
 export default {
   name: 'results',
-  created () {
-    WS.getResulsFormat()
-    .then(this.updateResultsFormat)
-    .catch(function(err){console.error(err.statusText)});
-  },
   props: {
     'charts': {
       type: Array,
       required: true
     },
+    'resultsFormat': {
+      type: Array
+    }
   },
   data () {
     return {
-      resultsFormat: [],
       charts: [],
       chartTypes: ['pie', 'line', 'area', 'areaspline', 'bar', 'column', 'scatter', 'spline'],
     }
@@ -74,14 +71,6 @@ export default {
     },
     removeChart: function(chart) {
       this.$emit('removeChart', chart);
-    },
-    // Callback for the getRequest method
-    updateResultsFormat: function(responseText) {
-      // Verify that the result is not empty before modifying the value
-      const newResultsFormat = JSON.parse(responseText);
-      if (newResultsFormat !== undefined) {
-        this.resultsFormat = newResultsFormat;
-      }
     }
   },
   components: {
