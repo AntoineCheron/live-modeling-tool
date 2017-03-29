@@ -1,6 +1,7 @@
-package Webserver;
+package fr.irisa.diverse.Webserver;
 
-import Webserver.Servlet.*;
+import fr.irisa.diverse.Utils.Path;
+import fr.irisa.diverse.Webserver.Servlet.*;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -14,13 +15,13 @@ import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServlet;
 
 /**
- *  Webserver set and configure the server
+ *  fr.irisa.Webserver set and configure the server
  *
  * Created by antoine on 17/03/17.
  */
 public class Webserver {
 
-    private static String inputFileBasePath = Utils.Path.getSimulationInputFilePath();
+    private static String inputFileBasePath = Path.getSimulationInputFilePath();
     public static void main (String[] args) throws Exception {
         // Define the server
         Server server = new Server();
@@ -37,7 +38,7 @@ public class Webserver {
 
         ContextHandler contextHandler1 = new ContextHandler();
         contextHandler1.setContextPath("/");
-        contextHandler1.setResourceBase("src_web/");
+        contextHandler1.setResourceBase("src/main/webapp/");
         contextHandler1.setWelcomeFiles(new String[]{"index.html"});
         contextHandler1.setHandler(resourceHandler);
 

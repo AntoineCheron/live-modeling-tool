@@ -1,4 +1,6 @@
-package Webserver.Servlet;
+package fr.irisa.diverse.Webserver.Servlet;
+
+import fr.irisa.diverse.Utils.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,7 +51,7 @@ public class SimulationServlet extends HttpServlet {
 
     // Custom method
     private File createSimulationScript() throws IOException {
-        String absoluteURIToHs1d = Utils.Path.getHs1dPath();
+        String absoluteURIToHs1d = Path.getHs1dPath();
         System.out.println(absoluteURIToHs1d);
 
         File script = File.createTempFile("script", null);
@@ -58,6 +60,7 @@ public class SimulationServlet extends HttpServlet {
         PrintWriter printWriter = new PrintWriter(streamWriter);
 
         printWriter.println("#!/bin/bash");
+        printWriter.println("docker pull antoinecheronirisa/hs1d");
         printWriter.println("docker run --rm -v " + absoluteURIToHs1d + ":/app antoinecheronirisa/hs1d /bin/bash -c /app/entrypoint.sh");
 
         printWriter.close();

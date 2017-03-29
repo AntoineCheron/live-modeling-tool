@@ -1,6 +1,7 @@
-package Webserver.Servlet;
+package fr.irisa.diverse.Webserver.Servlet;
 
 import com.google.gson.Gson;
+import fr.irisa.diverse.Utils.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class SimulationResultsFormatServlet extends HttpServlet {
 
     // Attributes
-    private String pathToResults = Utils.Path.getSimulationResultsPath();
+    private String pathToResults = Path.getSimulationResultsPath();
 
     // Constructor
     public SimulationResultsFormatServlet () {
@@ -47,7 +48,8 @@ public class SimulationResultsFormatServlet extends HttpServlet {
 
         // Put the name of each file into an ArrayList
         ArrayList<String> list = new ArrayList<String>();
-        for (File dir_content : dir_contents) {
+
+        for (File dir_content : dir_contents != null ? dir_contents : new File[0]) {
             list.add(dir_content.getName());
         }
 

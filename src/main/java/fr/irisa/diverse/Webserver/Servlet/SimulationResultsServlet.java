@@ -1,6 +1,7 @@
-package Webserver.Servlet;
+package fr.irisa.diverse.Webserver.Servlet;
 
 import com.google.gson.Gson;
+import fr.irisa.diverse.Utils.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,7 @@ import java.util.List;
 public class SimulationResultsServlet extends HttpServlet {
 
     // Attributes
-    private String pathToResults = Utils.Path.getSimulationResultsPath();
+    private String pathToResults = Path.getSimulationResultsPath();
 
     // Constructor
     public SimulationResultsServlet () {

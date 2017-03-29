@@ -6,6 +6,7 @@
       <button @click="runSimulation" v-if="simulationRunning" class="btn btn-default" disabled>Simulation running</button>
       <div class="loader" v-if="simulationRunning"></div>
       <h3 v-if="simulationRunning">Simulation running for <span class="blue">{{simulationTimer.minutes}}</span>min<span class="orange">{{simulationTimer.seconds}}</span>seconds</h3>
+      <br /><h3 v-if="">Simulation runned successfully</h3>
     </div>
     <charts :charts="chartsToDisplay"></charts>
     <charts-selection
@@ -37,6 +38,7 @@ export default {
       chartsToDisplay: [],
       nextChartId: 1,
       simulationRunning: false,
+      simulationSuccess: false,
       simulationTimer: {
         minutes: 0,
         seconds: 0
@@ -49,9 +51,9 @@ export default {
     runSimulation: function() {
       // Request the server to launch the simulation
       WS.getSimulate()
-      .then(this.simulationEnded)
+      .then(this.simulationEnded(true))
       .catch(function(err){
-        this.simulationEnded();
+        this.simulationEnded(false);
         console.error(err.statusText)
       });
       // Turns the simulation running var to true to modify the view
@@ -68,7 +70,8 @@ export default {
         }
       }, 1000);
     },
-    simulationEnded: function() {
+    simulationEnded: function(success) {
+      this.simulationSuccess = success;
       this.simulationRunning = false;
       clearInterval(this.simulationTimeInterval);
       this.updateResultsFormat();

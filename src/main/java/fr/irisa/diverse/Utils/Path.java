@@ -1,4 +1,4 @@
-package Utils;
+package fr.irisa.diverse.Utils;
 
 /**
  * This file is a util, used to avoid hard coding path to simulation files

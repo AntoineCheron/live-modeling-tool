@@ -1,6 +1,7 @@
-package Webserver.Servlet;
+package fr.irisa.diverse.Webserver.Servlet;
 
 import com.google.gson.Gson;
+import fr.irisa.diverse.Utils.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +52,7 @@ public class SimulationPrerequisiteControlServlet extends HttpServlet {
         missingFiles = (ArrayList<String>) inputFileList.clone();
 
         // Path containing the files that will be used by the simulation
-        String filePath = Utils.Path.getSimulationInputFilePath();
+        String filePath = Path.getSimulationInputFilePath();
 
         // Retrieve the list of files contained into the folder
         File dir = new File(filePath);
