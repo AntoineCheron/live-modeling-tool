@@ -31,25 +31,31 @@ https://www.docker.com/community-edition
 https://java.com/en/download/
 ```
 
+You will also need maven and unzip
+```
+sudo apt install maven
+sudo apt-get install unzip
+```
+
 ### Installing
-You only need to download the war contained in this project.
+You only need to download the jar contained in this project in ./Jar/.
 First : open your terminal and go to the folder where you want to install this project
 
 Then,
-For the stable version :
+For the stable version (latest release) :
 ```
-TODO
+wget "https://github.com/AntoineCheron/live-modeling-tool/archive/v0.1.1.zip"
+unzip master.zip -d ./
+cd live-modeling-tool-master
+mvn package
 ```
 
 For the last development version :
 ```
-TODO
-```
-
-In any case, after downloading the project, you'll need to download the web dependencies :
-```
-cd live-modeling-tool/src_web/
-npm install
+wget "https://github.com/AntoineCheron/live-modeling-tool/archive/master.zip"
+unzip master.zip -d ./
+cd live-modeling-tool-master
+mvn package
 ```
 
 When you will try to run the simulation, the server will automatically pull the
@@ -64,7 +70,7 @@ docker pull antoinecheronirisa/hs1d
 1. Go to the folder where you installed the project
 2. Run the following command :
 ```
-TODO
+java -jar ./target/live-modeling-tool-0.1-jar-with-dependencies.jar
 ```
 
 ## How to go through the web app

@@ -44,6 +44,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Command to run the maven-assembly-plugin : in the livemodelingtool folder : mvn package -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
