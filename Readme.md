@@ -31,10 +31,11 @@ https://www.docker.com/community-edition
 https://java.com/en/download/
 ```
 
-You will also need maven and unzip
+You will also need maven, npm and unzip
 ```
 sudo apt install maven
 sudo apt-get install unzip
+sudo apt-get install npm
 ```
 
 ### Installing
@@ -49,8 +50,8 @@ unzip v0.1.1.zip -d ./
 cd live-modeling-tool-0.1.1
 mvn package
 cd src/main/webapp/
-mvn install
-mvn run build
+npm install
+npm run build
 cd ../../../
 ```
 
@@ -61,8 +62,8 @@ unzip master.zip -d ./
 cd live-modeling-tool-master
 mvn package
 cd src/main/webapp/
-mvn install
-mvn run build
+npm install
+npm run build
 cd ../../../
 ```
 
