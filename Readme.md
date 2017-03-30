@@ -45,8 +45,8 @@ Then,
 For the stable version (latest release) :
 ```
 wget "https://github.com/AntoineCheron/live-modeling-tool/archive/v0.1.1.zip"
-unzip master.zip -d ./
-cd live-modeling-tool-master
+unzip v0.1.1.zip -d ./
+cd live-modeling-tool-0.1.1
 mvn package
 ```
 
