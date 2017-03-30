@@ -48,6 +48,10 @@ wget "https://github.com/AntoineCheron/live-modeling-tool/archive/v0.1.1.zip"
 unzip v0.1.1.zip -d ./
 cd live-modeling-tool-0.1.1
 mvn package
+cd src/main/webapp/
+mvn install
+mvn run build
+cd ../../../
 ```
 
 For the last development version :
@@ -56,6 +60,10 @@ wget "https://github.com/AntoineCheron/live-modeling-tool/archive/master.zip"
 unzip master.zip -d ./
 cd live-modeling-tool-master
 mvn package
+cd src/main/webapp/
+mvn install
+mvn run build
+cd ../../../
 ```
 
 When you will try to run the simulation, the server will automatically pull the
