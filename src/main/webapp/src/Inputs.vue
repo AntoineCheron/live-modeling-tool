@@ -10,9 +10,9 @@
     <label for="paramInput">Key_spatialized_param.param : </label>
     <input type="file" name="paramInput" @change="onFileChange" id="paramInput" class="btn btn-primary"/>
     <button class="btn btn-warning submit" @click="uploadFiles">Envoyer</button>
-    <p id="inputFilesUploadSucces" v-if="allFilesUploaded">
+    <h3 id="inputFilesUploadSucces" v-if="allFilesUploaded">
       All files uploaded !
-    </p>
+    </h3>
   </section>
 </template>
 

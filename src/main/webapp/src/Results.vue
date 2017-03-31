@@ -6,7 +6,7 @@
       <button @click="runSimulation" v-if="simulationRunning" class="btn btn-default" disabled>Simulation running</button>
       <div class="loader" v-if="simulationRunning"></div>
       <h3 v-if="simulationRunning">Simulation running for <span class="blue">{{simulationTimer.minutes}}</span>min<span class="orange">{{simulationTimer.seconds}}</span>seconds</h3>
-      <br /><h3 v-if="">Simulation runned successfully</h3>
+      <br /><h3 v-if="simulationSuccess">Simulation runned successfully</h3>
     </div>
     <charts :charts="chartsToDisplay"></charts>
     <charts-selection
@@ -103,7 +103,7 @@ export default {
       const i = this.charts.indexOf(chart);
       chart.displayed = true;
       this.charts[i] = chart;
-      // Add the chart object into the chartsToDisplay array
+      // Add the duplicated chart object into the chartsToDisplay array
       this.chartsToDisplay.push(chart);
     },
     removeChart: function(chart) {

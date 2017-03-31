@@ -52,8 +52,6 @@ mvn package
 cd src/main/webapp/
 npm install
 npm run build
-cd ../../../SimulationUtils/
-git clone https://acheron@scm.gforge.inria.fr/authscm/acheron/git/hs1d/hs1d.git
 ```
 
 For the last development version :
@@ -65,8 +63,6 @@ mvn package
 cd src/main/webapp/
 npm install
 npm run build
-cd ../../../SimulationUtils/
-git clone https://acheron@scm.gforge.inria.fr/authscm/acheron/git/hs1d/hs1d.git
 ```
 
 When you will try to run the simulation, the server will automatically pull the

@@ -29,7 +29,8 @@ import matplotlib.pyplot as plt
 plt.close("all")
 
 #Definition of the flag used to specify the test case
-flag = 4
+flag = 0
+
 #Definition of folder and name for custom cases (if needed, set flag to 4)
 custom_case = "custom_input"
 name_custom = ""
