@@ -8,7 +8,7 @@
       <h3 v-if="simulationRunning">Simulation running for <span class="blue">{{simulationTimer.minutes}}</span>min<span class="orange">{{simulationTimer.seconds}}</span>seconds</h3>
       <br /><h3 v-if="simulationSuccess">Simulation runned successfully</h3>
     </div>
-    <charts :charts="chartsToDisplay"></charts>
+    <charts :charts="chartsToDisplay" @errorDisplayingChart="chart => {dontDisplayChart(chart);}"></charts>
     <charts-selection
     :charts="charts"
     :resultsFormat="resultsFormat"
@@ -105,6 +105,15 @@ export default {
       this.charts[i] = chart;
       // Add the duplicated chart object into the chartsToDisplay array
       this.chartsToDisplay.push(chart);
+    },
+    // Function triggered when the user wants to display
+    dontDisplayChart: function(chart) {
+      // Turn the displayed param of chart to false
+      const index = _.indexOf(this.charts, chart);
+      this.charts[index].displayed = false;
+
+      // Remove the chart from the chartsToDisplay array
+      this.chartsToDisplay = _.without(this.chartsToDisplay, chart);
     },
     removeChart: function(chart) {
       // First : remove the chart in the chartsToDisplay array

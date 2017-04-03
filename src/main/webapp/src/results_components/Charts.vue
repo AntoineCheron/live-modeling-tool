@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     removeChart: function(chart) {
-      this.charts = _.without(this.charts, chart);
+      this.$emit('errorDisplayingChart', chart);
     },
   },
   components: {
