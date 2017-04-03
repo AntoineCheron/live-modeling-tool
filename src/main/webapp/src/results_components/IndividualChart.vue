@@ -2,18 +2,19 @@
   <div class="generatedChart">
     <highcharts :options="options" v-if="options !== {}"></highcharts>
     <div v-if="matrice">
-      <input id="matrice-slider-chart-{{chart.id}}" type="range" class="chart-slider"
+      <input id="matrice-slider-chart-{{chart.id}}" type="range" min="1" class="chart-slider"
         :max="sliderMax"
         @input="handleSliderChange($event.target.value)"
         v-model="sliderValue"
       /> <!-- END OF THE INPUT -->
       <p>
-        {{chart.abscissa}} : {{sliderValue}} - Min : 0 - Max : {{sliderMax}}
+        Valeur du slider : {{sliderValue}} - Min : 1 - Max : {{sliderMax}}
       </p>
-      <button class="btn btn-default" @click="addOneToAbscissa">{{chart.abscissa}} + 1</button>
-      <button class="btn btn-default" @click="removeOneToAbscissa">{{chart.abscissa}} - 1</button>
-      <button class="btn btn-info" @click="reverseMatrice">
-        Reverse matrice</button>
+      <button class="btn btn-default" @click="addOneToAbscissa" :disabled="playing">{{chart.abscissa}} + 1</button>
+      <button class="btn btn-default" @click="removeOneToAbscissa" :disabled="playing">{{chart.abscissa}} - 1</button>
+      <button class="btn btn-info" @click="reverseMatrice" :disabled="playing">Reverse matrice</button>
+      <button class="btn btn-warning" @click="play" v-if="!playing">Play</button>
+      <button class="btn btn-warning" @click="stopPlaying" v-if="playing">Pause/Stop</button>
     </div>
   </div>
 </template>
@@ -42,11 +43,15 @@ export default {
       options: {},
       matrice: false,
       matriceObject: null,
+      matriceMax: 0,
+      matriceMin:0,
       reversedMatrice: false,
       sliderMax: 0,
       nbOfMatrices: 0,
       sliderValue: 0,
       changeAbscissaAlert: false,
+      playing: false,
+      playingInterval : null,
     }
   },
   asyncComputed: {
@@ -103,6 +108,14 @@ export default {
             if(typeof sliderValue !== 'undefined'){
               this.sliderValue = 0;
             }
+            // Third : find min and max into matrice
+            //(trick : start counting from the 8th point to avoid impact of initial conditions)
+            for(let i=8; i<parent.matriceObject.length; i++) {
+              const minRow = Math.min.apply(null, parent.matriceObject[i]);
+              const maxRow = Math.max.apply(null, parent.matriceObject[i]);
+              parent.matriceMin = minRow < parent.matriceMin ? minRow : parent.matriceMin;
+              parent.matriceMax = maxRow > parent.matriceMax ? maxRow : parent.matriceMax;
+            }
           }
 
           // Call this.generateOptionObjectFromChart for the chart to display
@@ -121,7 +134,12 @@ export default {
     handleSliderChange: function(value) {
       // Just need to change the value in the serie of the chart
       const newSerie = this.options.series[0];
-      newSerie.data = this.matriceObject[value].map(Number);
+      if (value <= this.matriceObject.length) {
+        newSerie.data = this.matriceObject[value-1].map(Number);
+      } else {
+        this.sliderValue = 1;
+        newSerie.data = this.matriceObject[0].map(Number);
+      }
       this.options.series[0] = newSerie;
     },
     reverseMatrice: function () {
@@ -143,7 +161,7 @@ export default {
       // Store the newly calculated matrice and adapt slider
       this.reversedMatrice = !this.reversedMatrice;
       this.matriceObject = reversedMatrice;
-      this.sliderValue = 0;
+      this.sliderValue = 1;
       this.sliderMax = this.matriceObject.length;
       this.handleSliderChange(this.sliderValue);
       this.changeAbscissaAlert = !this.changeAbscissaAlert;
@@ -243,6 +261,12 @@ export default {
         series: yAxisSeries
       };
 
+      // If we have to display a matrice, we fix the yAxis max and min
+      if(this.matrice) {
+        options.yAxis['max'] = parseFloat(this.matriceMax);
+        options.yAxis['min'] = parseFloat(this.matriceMin);
+      }
+
       /* Finished, now we resolve the promise created on the first line
       of this function */
       return options;
@@ -313,6 +337,34 @@ export default {
       }
 
       return nbOfDimensions;
+    },
+    play: function () {
+      const step = 60; // In milliseconds
+      const parent = this; // Used to have this into the setInterval
+
+      /* Run the simulation by increasing this.sliderValue by 1 every
+      {{step}} milliseconds and adapting the chart accordingly.
+      This runs with no end */
+
+      new Promise(function(resolve, reject) {
+        parent.playing = true;
+        parent.playingInterval = setInterval(function() {
+          parent.sliderValue = parseInt(parent.sliderValue)+1;
+          parent.handleSliderChange(parent.sliderValue);
+          if(parseInt(parent.sliderValue) === parseInt(parent.sliderMax)) {
+            resolve();
+          }
+        }, step);
+      })
+      .then(function() {
+        parent.stopPlaying();
+      }).catch(err => {console.error(err);});
+
+      // And here it is finished :)
+    },
+    stopPlaying: function() {
+      clearInterval(this.playingInterval);
+      this.playing = false;
     },
     /* Generate an info message for the user in case she chose to display
     one dimension variables and matrices on the same chart */
