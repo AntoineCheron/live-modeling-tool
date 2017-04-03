@@ -103,9 +103,9 @@ you want to see on the ordinate
 ### Back-end
 
 ## Next features that will be developed
-* Making simulation faster
-* Charts displaying matrices
 * Graph exportation
+* Making simulation faster
+* Dynamic description of the inputs
 * Calibration of the simulation's mathematic model
 
 More to come ...
