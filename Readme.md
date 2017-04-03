@@ -39,19 +39,14 @@ sudo apt-get install npm
 ```
 
 ### Installing
-You only need to download the jar contained in this project in ./Jar/.
 First : open your terminal and go to the folder where you want to install this project
 
-Then,
+Then download the version you want,
 For the stable version (latest release) :
 ```
-wget "https://github.com/AntoineCheron/live-modeling-tool/archive/v0.1.1.zip"
-unzip v0.1.1.zip -d ./
-cd live-modeling-tool-0.1.1
-mvn package
-cd src/main/webapp/
-npm install
-npm run build
+wget "https://github.com/AntoineCheron/live-modeling-tool/archive/v0.1.2.zip"
+unzip v0.1.2.zip -d ./
+cd live-modeling-tool-0.1.2
 ```
 
 For the last development version :
@@ -59,10 +54,11 @@ For the last development version :
 wget "https://github.com/AntoineCheron/live-modeling-tool/archive/master.zip"
 unzip master.zip -d ./
 cd live-modeling-tool-master
-mvn package
-cd src/main/webapp/
-npm install
-npm run build
+```
+
+Then, just a few steps to install : 
+```
+./install.sh
 ```
 
 When you will try to run the simulation, the server will automatically pull the
@@ -77,7 +73,7 @@ docker pull antoinecheronirisa/hs1d
 1. Go to the folder where you installed the project
 2. Run the following command :
 ```
-java -jar ./target/live-modeling-tool-0.1-jar-with-dependencies.jar
+./run.sh
 ```
 
 ## How to go through the web app
