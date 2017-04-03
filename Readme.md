@@ -99,6 +99,7 @@ you want to see on the ordinate
 ### Back-end
 
 ## Next features that will be developed
+* Creating docker containing this project
 * Graph exportation
 * Making simulation faster
 * Dynamic description of the inputs
