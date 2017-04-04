@@ -2,8 +2,8 @@
   <section id="results">
     <h1>Results</h1>
     <div class="horizontalContainer">
-      <button @click="runSimulation" v-if="!simulationRunning" class="btn btn-default">Run simulation</button>
-      <button @click="runSimulation" v-if="simulationRunning" class="btn btn-default" disabled>Simulation running</button>
+      <button @click="runSimulation()" v-if="!simulationRunning" class="btn btn-default">Run simulation</button>
+      <button v-if="simulationRunning" class="btn btn-default" disabled>Simulation running</button>
       <div class="loader" v-if="simulationRunning"></div>
       <h3 v-if="simulationRunning">Simulation running for <span class="blue">{{simulationTimer.minutes}}</span>min<span class="orange">{{simulationTimer.seconds}}</span>seconds</h3>
       <br /><h3 v-if="simulationSuccess">Simulation runned successfully</h3>
@@ -49,17 +49,21 @@ export default {
   },
   methods: {
     runSimulation: function() {
+      const Parent = this;
       // Request the server to launch the simulation
       WS.getSimulate()
-      .then(this.simulationEnded(true))
+      // .then called after the simulation runned
+      .then(function() {
+        Parent.simulationEnded(true);
+      })
       .catch(function(err){
-        this.simulationEnded(false);
+        Parent.simulationEnded(false);
         console.error(err.statusText)
       });
+
       // Turns the simulation running var to true to modify the view
       this.simulationRunning = true;
       // Launch the timer
-      const Parent = this;
       Parent.simulationTimer.seconds = 0;
       Parent.simulationTimer.minutes = 0;
       this.simulationTimeInterval = setInterval(function(){
@@ -71,6 +75,7 @@ export default {
       }, 1000);
     },
     simulationEnded: function(success) {
+      console.log(`simulationEnded : $}{success}`);
       this.simulationSuccess = success;
       this.simulationRunning = false;
       clearInterval(this.simulationTimeInterval);
@@ -176,7 +181,12 @@ export default {
   border-radius: 50%;
   width: 30px;
   height: 30px;
+  margin-left: 10px;
   animation: spin 2s linear infinite;
+}
+
+h3 {
+  margin-left: 10px;
 }
 
 @keyframes spin {
