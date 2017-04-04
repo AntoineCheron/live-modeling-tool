@@ -18,6 +18,14 @@ and the data she picked up on the real case study.
 
 ## Getting Started
 
+There are two way to run this project : docker or using the binaries.
+
+**Using docker** :
+1. docker pull antoinecheronirisa/live-modeling-tool
+2. docker run -it --rm -p 8080:8080 antoinecheronirisa/live-modeling-tool
+3. Going to : http://localhost:8080
+
+**Using the binaries**
 ### Prerequisites
 To run this project, you'll need :
 
@@ -56,7 +64,7 @@ unzip master.zip -d ./
 cd live-modeling-tool-master
 ```
 
-Then, just a few steps to install : 
+Then, just one step to install :
 ```
 ./install.sh
 ```
