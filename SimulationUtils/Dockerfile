@@ -1,13 +1,11 @@
 FROM python
 LABEL name="Python OSUR"
-# COPY hs1d/* /app/
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
+RUN apt-get install -y apt-utils
 RUN pip3 install matplotlib numpy scipy cython
 RUN pip3 install flopy
 RUN apt-get install -y cython gfortran cmake unzip
-WORKDIR home/
-RUN mkdir hillslope1D
-WORKDIR hillslope1D
 RUN mkdir sundials
 WORKDIR sundials
 RUN mkdir srcdir builddir instdir
@@ -26,6 +24,9 @@ RUN wget https://pypi.python.org/packages/4c/c0/19a54949817204313efff9f83f1e4a24
 RUN unzip Assimulo-2.9.zip
 RUN rm Assimulo-2.9.zip
 WORKDIR Assimulo-2.9
-RUN python setup.py install –sundials-home=/home/hillslope1D/sundials/instdir
-RUN export LD_LIBRARY_PATH=/home/hillslope1D/sundials/instdir/lib
-# WORKDIR /app/src_python/
+RUN python setup.py install --sundials-home=/sundials/instdir
+ENV LD_LIBRARY_PATH=/sundials/instdir/lib
+COPY entrypoint.sh /
+COPY hs1d/src_python/ /app/src_python/
+COPY hs1d/test_case/ /app/test_case/
+WORKDIR /

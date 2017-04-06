@@ -60,7 +60,7 @@ public class SimulationServlet extends HttpServlet {
         PrintWriter printWriter = new PrintWriter(streamWriter);
 
         printWriter.println("#!/bin/bash");
-        printWriter.println("docker run --rm -v " + absoluteURIToHs1d + ":/app antoinecheronirisa/hs1d:latest /bin/bash -c /app/entrypoint.sh");
+        printWriter.println("docker run --rm -v " + absoluteURIToHs1d + ":/app antoinecheronirisa/hs1d:latest /bin/bash -c ./entrypoint.sh");
 
         printWriter.close();
 
